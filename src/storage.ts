@@ -1,47 +1,62 @@
-import Database from 'better-sqlite3';
+import fs from 'fs';
 import path from 'path';
-import fs from 'path';
 
-const dbPath = path.join(__dirname, '..', 'data', 'bot.db');
-
-// Ensure data directory exists
-const dataDir = path.dirname(dbPath);
-const fs2 = require('fs');
-if (!fs2.existsSync(dataDir)) {
-    fs2.mkdirSync(dataDir, { recursive: true });
+interface StorageData {
+    seenNews: Record<string, { source: string; timestamp: string }>;
+    countdownMessageId: string | null;
 }
 
-const db = new Database(dbPath);
+const dataDir = path.join(__dirname, '..', 'data');
+const filePath = path.join(dataDir, 'storage.json');
 
-// Initialize tables
-db.exec(`
-    CREATE TABLE IF NOT EXISTS seen_news (
-        id TEXT PRIMARY KEY,
-        source TEXT,
-        timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
-    );
-    CREATE TABLE IF NOT EXISTS countdown_state (
-        id TEXT PRIMARY KEY,
-        messageId TEXT
-    );
-`);
+// Ensure data directory exists
+if (!fs.existsSync(dataDir)) {
+    fs.mkdirSync(dataDir, { recursive: true });
+}
+
+function loadData(): StorageData {
+    if (!fs.existsSync(filePath)) {
+        return { seenNews: {}, countdownMessageId: null };
+    }
+    try {
+        const raw = fs.readFileSync(filePath, 'utf-8');
+        const parsed = JSON.parse(raw);
+        return {
+            seenNews: parsed.seenNews || {},
+            countdownMessageId: parsed.countdownMessageId || null
+        };
+    } catch (err) {
+        console.error('Failed to read storage.json, using default state:', err);
+        return { seenNews: {}, countdownMessageId: null };
+    }
+}
+
+let data: StorageData = loadData();
+
+function saveData(): void {
+    try {
+        fs.writeFileSync(filePath, JSON.stringify(data, null, 2), 'utf-8');
+    } catch (err) {
+        console.error('Failed to write storage.json:', err);
+    }
+}
 
 export const storage = {
     isNewsSeen: (id: string): boolean => {
-        const stmt = db.prepare('SELECT id FROM seen_news WHERE id = ?');
-        return !!stmt.get(id);
+        return Boolean(data.seenNews && data.seenNews[id]);
     },
     markNewsSeen: (id: string, source: string) => {
-        const stmt = db.prepare('INSERT OR IGNORE INTO seen_news (id, source) VALUES (?, ?)');
-        stmt.run(id, source);
+        data.seenNews[id] = {
+            source,
+            timestamp: new Date().toISOString()
+        };
+        saveData();
     },
     getCountdownMessageId: (): string | null => {
-        const stmt = db.prepare('SELECT messageId FROM countdown_state WHERE id = ?');
-        const row = stmt.get('main') as { messageId: string } | undefined;
-        return row ? row.messageId : null;
+        return data.countdownMessageId || null;
     },
     setCountdownMessageId: (messageId: string) => {
-        const stmt = db.prepare('INSERT OR REPLACE INTO countdown_state (id, messageId) VALUES (?, ?)');
-        stmt.run('main', messageId);
+        data.countdownMessageId = messageId;
+        saveData();
     }
 };
