@@ -8,7 +8,7 @@ export const generateCountdownEmbed = () => {
         .setTitle('⏳ Közelgő Események')
         .setColor('#FFA500')
         .setThumbnail('https://assets.stickpng.com/images/5a576a4d1c992a034569ab75.png')
-        .setFooter({ text: 'WoW Classic+ (Camelot) Visszaszámláló', iconURL: 'https://assets.stickpng.com/images/5a576a4d1c992a034569ab75.png' })
+        .setFooter({ text: 'World of Warcraft: Forever Visszaszámláló', iconURL: 'https://assets.stickpng.com/images/5a576a4d1c992a034569ab75.png' })
         .setTimestamp();
 
     const now = new Date();

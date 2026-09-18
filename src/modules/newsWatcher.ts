@@ -48,13 +48,13 @@ export const setupNewsWatcher = (client: Client) => {
                     if (!storage.isNewsSeen(id)) {
                         storage.markNewsSeen(id, feedConfig.name);
 
-                        // Tisztítjuk a Reddit sallangokat a szöveg végéről (pl "submitted by...")
+                        // Tisztítjuk a Wowhead "Continue reading »" sallangot a szöveg végéről
                         let cleanSnippet = item.contentSnippet || '';
-                        const submittedByIndex = cleanSnippet.indexOf('submitted by');
-                        if (submittedByIndex !== -1) {
-                            cleanSnippet = cleanSnippet.substring(0, submittedByIndex).trim();
+                        const continueReadingIndex = cleanSnippet.indexOf('Continue reading');
+                        if (continueReadingIndex !== -1) {
+                            cleanSnippet = cleanSnippet.substring(0, continueReadingIndex).trim();
                         }
-                        
+
                         if (cleanSnippet.length > 500) {
                             cleanSnippet = cleanSnippet.substring(0, 500) + '...';
                         }
@@ -65,17 +65,17 @@ export const setupNewsWatcher = (client: Client) => {
                         const embed = new EmbedBuilder()
                             .setTitle(item.title ? (item.title.length > 250 ? item.title.substring(0, 250) + '...' : item.title) : 'Új hír')
                             .setURL(item.link || null)
-                            .setAuthor({ 
-                                name: item.creator || item.author || 'Reddit Felhasználó', 
-                                iconURL: 'https://www.redditstatic.com/desktop2x/img/favicon/apple-icon-57x57.png' 
+                            .setAuthor({
+                                name: item.creator || item.author || 'Wowhead',
+                                iconURL: 'https://wow.zamimg.com/images/logos/wh-logo.png'
                             })
                             .setDescription(cleanSnippet)
-                            .setFooter({ 
-                                text: `Közösség: ${feedConfig.name}`,
+                            .setFooter({
+                                text: `Forrás: ${feedConfig.name}`,
                                 iconURL: 'https://assets.stickpng.com/images/5a576a4d1c992a034569ab75.png'
                             })
                             .setTimestamp(item.pubDate ? new Date(item.pubDate) : new Date())
-                            .setColor('#FF4500'); // Reddit narancs szín
+                            .setColor('#D4AF37'); // Wowhead arany szín
 
                         await channel.send({ embeds: [embed] });
                     }

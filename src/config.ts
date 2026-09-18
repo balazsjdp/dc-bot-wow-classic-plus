@@ -7,7 +7,7 @@ export const config = {
     newsChannelId: process.env.NEWS_CHANNEL_ID || '',
     countdownChannelId: process.env.COUNTDOWN_CHANNEL_ID || '',
     rssFeeds: [
-        { name: 'Reddit r/classicwow (Camelot)', url: 'https://www.reddit.com/r/classicwow/search.rss?q=Camelot&restrict_sr=1&sort=new' },
+        { name: 'Wowhead (WoW: Forever)', url: 'https://www.wowhead.com/forever/news/rss/all' },
     ],
     countdownEvents: [
         {

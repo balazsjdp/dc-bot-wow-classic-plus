@@ -7,7 +7,7 @@ const parser = new Parser({
 });
 
 async function run() {
-    const feed = await parser.parseURL('https://www.reddit.com/r/classicwow/search.rss?q=Camelot&restrict_sr=1&sort=new');
+    const feed = await parser.parseURL('https://www.wowhead.com/forever/news/rss/all');
     console.log(feed.items[0].title);
     console.log(feed.items[0].contentSnippet);
 }
