@@ -5,8 +5,10 @@ import { config } from '../config';
 import { storage } from '../storage';
 
 const parser = new Parser({
+    // Megjegyzés: a Wowhead Cloudflare bot-védelme blokkolja a teljes, "hamisított" Chrome
+    // User-Agent stringet, de az egyszerű "Mozilla/5.0"-t átengedi.
     headers: {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36'
+        'User-Agent': 'Mozilla/5.0'
     }
 });
 
