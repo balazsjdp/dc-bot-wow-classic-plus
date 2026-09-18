@@ -10,12 +10,12 @@ export const config = {
         { name: 'Reddit r/classicwow (Camelot)', url: 'https://www.reddit.com/r/classicwow/search.rss?q=Camelot&restrict_sr=1&sort=new' },
     ],
     countdownEvents: [
-        { 
-            name: 'BlizzCon 2026', 
-            date: new Date('2026-09-12T17:30:00Z'), 
-            description: 'A hivatalos bejelentések és újdonságok bemutatása a BlizzCon-on.',
-            url: 'https://blizzcon.com',
-            image: 'https://blz-contentstack-images.akamaized.net/v3/assets/blt4230e1d1d56e7d5e/bltd5479e78a3cb6c18/6903bb6644af3e1081c75d7e/event_header.webp'
+        {
+            name: 'World of Warcraft: Forever',
+            date: new Date('2026-11-04T23:00:00Z'),
+            description: 'A World of Warcraft: Forever hivatalos megjelenése.',
+            url: 'https://worldofwarcraft.blizzard.com/en-us/forever',
+            image: 'https://imguscdn.gamespress.com/cdn/files/BlizzardLive/2026/09/121553-8b567c06/WoW_Forever_Logo.png?w=276&mode=max&otf=y&quality=90&format=png&bgcolor=transparent&sky=aee8c234b2dab8ebd6fe975d749744a8cdd5ab7b70c93cdabf754222ce7d555d'
         }
     ]
 };
